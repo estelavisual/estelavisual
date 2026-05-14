@@ -17,7 +17,7 @@
   <meta property="og:url" content="https://estelavisual.com.ar"/>
   <meta property="og:title" content="EstelaVisual Estudio | Fotografía Inmobiliaria La Plata"/>
   <meta property="og:description" content="Fotos profesionales que venden propiedades más rápido. La Plata y GBA. Consultá ahora."/>
-  <meta property="og:image" content="fotos/1.jpg"/>
+  <meta property="og:image" content="assets/img/galeria/1.jpg"/>
   <meta property="og:locale" content="es_AR"/>
 
   <!-- Twitter Card -->
@@ -99,8 +99,8 @@
     .pkg:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(201,168,76,0.07); }
 
     /* Gallery */
-    .gallery-item { overflow: hidden; aspect-ratio: 4/3; background: #111; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+    .gallery-item { overflow: hidden; background: #111; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.7s ease; }
     .gallery-item:hover img { transform: scale(1.06); }
 
     /* Step line */
@@ -163,7 +163,7 @@
   <div class="absolute inset-0 z-0">
     <div class="absolute inset-0 bg-gradient-to-b from-dark/75 via-dark/40 to-dark z-10"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-dark/60 via-transparent to-transparent z-10"></div>
-    <div class="w-full h-full hero-bg bg-[url('fotos/1.jpg')] bg-cover bg-center"></div>
+    <div class="w-full h-full hero-bg bg-[url('assets/img/galeria/1.jpg')] bg-cover bg-center"></div>
   </div>
 
   <!-- Vertical label -->
@@ -199,12 +199,12 @@
 
   <!-- Scroll indicator -->
   <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-40">
-    <span class="text-[8px] tracking-[0.4em] uppercase text-white">Scroll</span>
+    <span class="text-[8px] tracking-[0.4em] uppercase text-white">Desliza</span>
     <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
   </div>
 </section>
 
-<!-- ══════════════════════════════ NÚMEROS ══════════════════════════════ -->
+<!-- ══════════════════════════════ NÚMEROS ══════════════════════════════
 <section class="py-16 px-8 md:px-16 border-y border-white/[0.04] bg-dark2">
   <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
     <div class="reveal text-center">
@@ -225,6 +225,7 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- ══════════════════════════════ SERVICIOS ══════════════════════════════ -->
 <section id="servicios" class="py-28 px-8 md:px-16 bg-[#080808]">
@@ -399,24 +400,24 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-1">
-      <div class="gallery-item reveal col-span-2 md:col-span-1" style="aspect-ratio:3/4">
-        <img src="fotos/1.jpg" alt="Fotografía inmobiliaria La Plata - sala de estar"/>
+    <div class="grid grid-cols-3 gap-0">
+      <div class="gallery-item reveal">
+        <img src="assets/img/galeria/1.jpg" alt="Fotografía inmobiliaria La Plata - sala de estar"/>
       </div>
       <div class="gallery-item reveal" style="transition-delay:0.1s">
-        <img src="fotos/2.jpg" alt="Fotografía de cocina profesional"/>
+        <img src="assets/img/galeria/2.jpg" alt="Fotografía de cocina profesional"/>
       </div>
       <div class="gallery-item reveal" style="transition-delay:0.2s">
-        <img src="fotos/3.jpg" alt="Fotografía de dormitorio"/>
+        <img src="assets/img/galeria/3.jpg" alt="Fotografía de dormitorio"/>
       </div>
       <div class="gallery-item reveal" style="transition-delay:0.3s">
-        <img src="fotos/4.jpg" alt="Fotografía exterior de propiedad"/>
+        <img src="assets/img/galeria/4.jpg" alt="Fotografía exterior de propiedad"/>
       </div>
       <div class="gallery-item reveal" style="transition-delay:0.4s">
-        <img src="fotos/5.jpg" alt="Fotografía de baño"/>
+        <img src="assets/img/galeria/5.jpg" alt="Fotografía de baño"/>
       </div>
-      <div class="gallery-item reveal col-span-2 md:col-span-1" style="transition-delay:0.5s;aspect-ratio:16/9">
-        <img src="fotos/6.jpg" alt="Fotografía de terraza"/>
+      <div class="gallery-item reveal" style="transition-delay:0.5s">
+        <img src="assets/img/galeria/6.jpg" alt="Fotografía de terraza"/>
       </div>
     </div>
 
