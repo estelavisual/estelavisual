@@ -84,6 +84,10 @@
 
     /* Float */
     @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes ebook-float {
+      0%,100% { transform: perspective(800px) rotateY(-8deg) rotateX(2deg) translateY(0); }
+      50%     { transform: perspective(800px) rotateY(-8deg) rotateX(2deg) translateY(-10px); }
+    }
     .float-card { animation: float 7s ease-in-out infinite; }
 
     /* Gold line */
@@ -107,9 +111,65 @@
     .pkg:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(201,168,76,0.07); }
 
     /* Gallery */
-    .gallery-item { overflow: hidden; background: #111; }
+    .gallery-item { overflow: hidden; background: #111; cursor: none; }
     .gallery-item img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.7s ease; }
     .gallery-item:hover img { transform: scale(1.06); }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 99990;
+      background: rgba(5,5,5,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #lightbox.open { opacity: 1; pointer-events: all; }
+
+    #lightbox-img {
+      max-width: min(90vw, 1100px);
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      opacity: 0; transform: scale(0.97);
+      user-select: none; -webkit-user-select: none;
+    }
+    #lightbox.open #lightbox-img { opacity: 1; transform: scale(1); }
+
+    #lightbox-close {
+      position: fixed; top: 24px; right: 28px;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: #c9a84c; background: transparent;
+      font-size: 1.1rem; line-height: 1;
+      cursor: none; transition: background 0.25s ease, border-color 0.25s ease;
+      z-index: 99991;
+    }
+    #lightbox-close:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; }
+
+    .lightbox-arrow {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(201,168,76,0.25);
+      color: #c9a84c; background: transparent;
+      cursor: none; transition: background 0.25s ease, border-color 0.25s ease;
+      z-index: 99991;
+    }
+    .lightbox-arrow:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; }
+    #lightbox-prev { left: 20px; }
+    #lightbox-next { right: 20px; }
+
+    #lightbox-counter {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-family: 'Outfit', sans-serif; font-size: 10px;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(201,168,76,0.5);
+      z-index: 99991; pointer-events: none;
+    }
 
     /* Step line */
     .step-connector { flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.5), rgba(201,168,76,0.1)); }
@@ -119,6 +179,51 @@
       * { cursor: none; }
       #cursor { position: fixed; width: 8px; height: 8px; background: #c9a84c; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: transform 0.1s ease; mix-blend-mode: difference; }
       #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(201,168,76,0.4); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%, -50%); transition: transform 0.25s ease, width 0.3s, height 0.3s, opacity 0.3s; }
+    }
+
+    /* ── Hero entrance animations ───────────────────── */
+    @keyframes hi-fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes hi-fade-down {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes hi-scale-x {
+      from { opacity: 0; transform: scaleX(0); }
+      to   { opacity: 1; transform: scaleX(1); }
+    }
+
+    .hi-eyebrow {
+      opacity: 0;
+      animation: hi-fade-down 0.8s ease-out 0s forwards;
+    }
+    .hi-line {
+      opacity: 0;
+      transform-origin: center;
+      animation: hi-scale-x 0.7s ease-out 0.4s forwards;
+    }
+    .hi-title {
+      opacity: 0;
+      animation: hi-fade-up 1s ease-out 0.2s forwards;
+    }
+    .hi-subtitle {
+      opacity: 0;
+      animation: hi-fade-up 1s ease-out 0.5s forwards;
+    }
+    .hi-cta {
+      opacity: 0;
+      animation: hi-fade-up 1s ease-out 0.8s forwards;
+    }
+
+    /* Respeta reduced-motion: muestra todo instantáneo */
+    @media (prefers-reduced-motion: reduce) {
+      .hi-eyebrow, .hi-line, .hi-title, .hi-subtitle, .hi-cta {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
     }
   </style>
 </head>
@@ -139,7 +244,9 @@
     <a href="#servicios" class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Servicios</a>
     <a href="#proceso" class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Proceso</a>
     <a href="#portfolio" class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Portfolio</a>
-    <a href="#nosotros" class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Nosotros</a>
+    <a href="#nosotros"  class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Nosotros</a>
+    <a href="#contacto"  class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Contacto</a>
+    <a href="#recursos"  class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Recursos</a>
     <a href="https://wa.me/5492246592370?text=Hola%20EstelaVisual%2C%20me%20interesa%20una%20sesi%C3%B3n%20fotogr%C3%A1fica" target="_blank"
        class="border border-gold/50 text-gold text-[9px] tracking-[0.3em] uppercase px-6 py-2.5 hover:bg-gold hover:text-dark transition-all">
       Contacto
@@ -160,6 +267,8 @@
   <a href="#portfolio" class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">Portfolio</a>
   <a href="#nosotros"  class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">Nosotros</a>
   <a href="#faq"       class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">FAQ</a>
+  <a href="#contacto"  class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">Contacto</a>
+  <a href="#recursos"  class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">Recursos</a>
   <a href="https://wa.me/5492246592370" target="_blank"
      class="mt-4 bg-gold text-dark text-sm tracking-[0.2em] uppercase py-4 text-center font-semibold mobile-link">
     💬 Escribinos
@@ -176,29 +285,29 @@
 
   <!-- Vertical label -->
   <div class="absolute left-8 bottom-1/3 z-20 hidden lg:flex items-center gap-3 -rotate-90 origin-left">
-    <span class="gold-line opacity-50"></span>
+    <span class="gold-line hi-line opacity-50"></span>
     <span class="text-[9px] tracking-[0.4em] uppercase text-white/30">La Plata · Buenos Aires</span>
   </div>
 
   <div class="relative z-20 max-w-5xl px-8 md:px-16">
     <div class="overflow-hidden mb-6">
-      <span class="inline-block text-gold tracking-[0.5em] uppercase text-[9px] animate-[fadeInDown_1s_ease_both]">
+      <span class="hi-eyebrow inline-block text-gold tracking-[0.5em] uppercase text-[9px]">
         Imagen Estratégica · Contenido Inmobiliario
       </span>
     </div>
-    <h1 class="font-serif text-5xl md:text-7xl lg:text-[90px] leading-[1.05] mb-4 animate-[fadeInUp_1s_ease_both]">
+    <h1 class="hi-title font-serif text-5xl md:text-7xl lg:text-[90px] leading-[1.05] mb-4">
       Espacios que impactan, <span class="text-gold">ventas que se aceleran.</span>
     </h1>
-    <p class="text-white/60 text-sm md:text-base font-light max-w-xl mb-10 leading-relaxed animate-[fadeInUp_1.2s_ease_both]">
+    <p class="hi-subtitle text-white/60 text-sm md:text-base font-light max-w-xl mb-10 leading-relaxed">
       Fotografía profesional que convierte tu propiedad en la más atractiva del portal.
     </p>
-    <div class="flex flex-wrap gap-4 animate-[fadeInUp_1.4s_ease_both]">
+    <div class="hi-cta flex flex-wrap gap-4">
       <a href="#portfolio"
          class="bg-gold text-dark text-[10px] tracking-[0.2em] uppercase font-semibold py-4 px-10 hover:bg-white transition-all duration-300">
         Ver Portfolio
       </a>
     </div>
-    <div class="mt-10 grid gap-3 sm:grid-cols-2 text-[10px] md:text-[11px] uppercase tracking-[0.35em] text-white/60 animate-[fadeInUp_1.4s_ease_both]">
+    <div class="hi-cta mt-10 grid gap-3 sm:grid-cols-2 text-[10px] md:text-[11px] uppercase tracking-[0.35em] text-white/60">
       <div class="bg-white/[0.05] border border-white/[0.08] rounded-3xl px-5 py-5 min-h-[5.5rem] text-center leading-6 shadow-[0_16px_50px_rgba(0,0,0,0.18)]">
         Fotos optimizadas para Zonaprop y Mercado Libre
       </div>
@@ -231,23 +340,23 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-3 gap-1">
-      <div class="gallery-item reveal">
+    <div class="flex flex-col gap-1 md:grid md:grid-cols-3 md:gap-1">
+      <div class="gallery-item reveal h-64 md:h-auto">
         <img src="assets/img/galeria/1.jpg" alt="Fotografía inmobiliaria La Plata - sala de estar"/>
       </div>
-      <div class="gallery-item reveal" style="transition-delay:0.1s">
+      <div class="gallery-item reveal h-64 md:h-auto" style="transition-delay:0.1s">
         <img src="assets/img/galeria/2.jpg" alt="Fotografía de cocina profesional"/>
       </div>
-      <div class="gallery-item reveal" style="transition-delay:0.2s">
+      <div class="gallery-item reveal h-64 md:h-auto" style="transition-delay:0.2s">
         <img src="assets/img/galeria/3.jpg" alt="Fotografía de dormitorio"/>
       </div>
-      <div class="gallery-item reveal" style="transition-delay:0.3s">
+      <div class="gallery-item reveal h-64 md:h-auto" style="transition-delay:0.3s">
         <img src="assets/img/galeria/4.jpg" alt="Fotografía exterior de propiedad"/>
       </div>
-      <div class="gallery-item reveal" style="transition-delay:0.4s">
+      <div class="gallery-item reveal h-64 md:h-auto" style="transition-delay:0.4s">
         <img src="assets/img/galeria/5.jpg" alt="Fotografía de baño"/>
       </div>
-      <div class="gallery-item reveal" style="transition-delay:0.5s">
+      <div class="gallery-item reveal h-64 md:h-auto" style="transition-delay:0.5s">
         <img src="assets/img/galeria/6.jpg" alt="Fotografía de terraza"/>
       </div>
     </div>
@@ -582,6 +691,363 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════ CONTACTO ══════════════════════════════ -->
+<section id="contacto" class="py-28 px-8 md:px-16 bg-dark2 border-t border-white/[0.04]">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="grid md:grid-cols-2 gap-16 md:gap-24 items-start">
+
+      <!-- Columna izquierda — texto -->
+      <div class="reveal">
+        <div class="flex items-center gap-4 mb-4">
+          <span class="gold-line"></span>
+          <span class="text-[9px] tracking-[0.4em] uppercase text-gold">Contacto</span>
+        </div>
+        <h2 class="font-serif text-4xl md:text-6xl mb-6">
+          Hablemos de<br/><em class="font-light text-white/50">tu propiedad.</em>
+        </h2>
+        <p class="text-xs text-muted leading-relaxed max-w-sm mb-10">
+          Contanos qué necesitás y te respondemos en menos de 24 horas con una propuesta a medida.
+        </p>
+        <div class="space-y-4 text-xs text-muted">
+          <div class="flex items-center gap-3">
+            <span class="gold-line" style="width:16px"></span>
+            La Plata y Gran Buenos Aires
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="gold-line" style="width:16px"></span>
+            <a href="mailto:hola@estelavisual.com.ar" class="hover:text-gold transition-colors">hola@estelavisual.com.ar</a>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="gold-line" style="width:16px"></span>
+            <a href="https://wa.me/5492246592370" target="_blank" class="hover:text-gold transition-colors">WhatsApp +54 9 2246 592370</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna derecha — formulario -->
+      <div class="reveal">
+
+        <!-- Mensaje de éxito (visible solo cuando Netlify redirige con ?enviado=true) -->
+        <div id="form-success" class="hidden border border-gold/20 bg-dark3 p-10 text-center">
+          <div class="gold-line mx-auto mb-6 opacity-50"></div>
+          <p class="font-serif text-2xl text-gold mb-2">¡Gracias!</p>
+          <p class="text-sm text-cream/50 font-light">Te contactamos en menos de 24 horas.</p>
+          <div class="gold-line mx-auto mt-6 opacity-50"></div>
+        </div>
+
+        <form
+          name="contacto"
+          method="POST"
+          action="/?enviado=true#contacto"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          id="contact-form"
+          class="space-y-5"
+        >
+          <!-- Campos ocultos requeridos por Netlify -->
+          <input type="hidden" name="form-name" value="contacto"/>
+          <input name="bot-field" type="hidden"/>
+
+          <!-- Nombre -->
+          <div>
+            <label class="block text-[9px] tracking-[0.25em] uppercase text-white/40 mb-2" for="nombre">Nombre</label>
+            <input
+              id="nombre" name="nombre" type="text" required
+              placeholder="Tu nombre"
+              class="w-full bg-dark3 border border-white/[0.08] text-cream text-sm font-light px-5 py-3.5 placeholder:text-white/20 focus:outline-none focus:border-gold/40 transition-colors duration-300"
+            />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-[9px] tracking-[0.25em] uppercase text-white/40 mb-2" for="email">Email</label>
+            <input
+              id="email" name="email" type="email" required
+              placeholder="tu@email.com"
+              class="w-full bg-dark3 border border-white/[0.08] text-cream text-sm font-light px-5 py-3.5 placeholder:text-white/20 focus:outline-none focus:border-gold/40 transition-colors duration-300"
+            />
+          </div>
+
+          <!-- Teléfono -->
+          <div>
+            <label class="block text-[9px] tracking-[0.25em] uppercase text-white/40 mb-2" for="telefono">Teléfono <span class="text-white/20 normal-case tracking-normal">(opcional)</span></label>
+            <input
+              id="telefono" name="telefono" type="tel"
+              placeholder="+54 9 ..."
+              class="w-full bg-dark3 border border-white/[0.08] text-cream text-sm font-light px-5 py-3.5 placeholder:text-white/20 focus:outline-none focus:border-gold/40 transition-colors duration-300"
+            />
+          </div>
+
+          <!-- Servicio -->
+          <div>
+            <label class="block text-[9px] tracking-[0.25em] uppercase text-white/40 mb-2" for="servicio">Servicio de interés</label>
+            <select
+              id="servicio" name="servicio"
+              class="w-full bg-dark3 border border-white/[0.08] text-cream text-sm font-light px-5 py-3.5 focus:outline-none focus:border-gold/40 transition-colors duration-300 appearance-none"
+            >
+              <option value="" disabled selected class="text-white/20">Seleccioná un servicio</option>
+              <option value="Fotografía Inmobiliaria">Fotografía Inmobiliaria</option>
+              <option value="Reel + Fotografía">Reel + Fotografía</option>
+              <option value="Presencia Mensual">Presencia Mensual en Redes</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+
+          <!-- Mensaje -->
+          <div>
+            <label class="block text-[9px] tracking-[0.25em] uppercase text-white/40 mb-2" for="mensaje">Mensaje</label>
+            <textarea
+              id="mensaje" name="mensaje" required rows="4"
+              placeholder="Contanos sobre tu propiedad o consulta..."
+              class="w-full bg-dark3 border border-white/[0.08] text-cream text-sm font-light px-5 py-3.5 placeholder:text-white/20 focus:outline-none focus:border-gold/40 transition-colors duration-300 resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="w-full bg-gold text-dark text-[10px] tracking-[0.25em] uppercase font-semibold py-4 hover:bg-goldL transition-all duration-300"
+          >
+            Enviar Consulta
+          </button>
+
+          <p class="text-[9px] tracking-[0.1em] text-white/20 text-center">
+            También podés escribirnos por <a href="https://wa.me/5492246592370" target="_blank" class="text-gold/50 hover:text-gold transition-colors">WhatsApp</a>
+          </p>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ RECURSOS ══════════════════════════════ -->
+<section id="recursos" class="py-28 px-8 md:px-16 bg-dark border-t border-white/[0.04]">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Encabezado -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 reveal">
+      <div>
+        <div class="flex items-center gap-4 mb-4">
+          <span class="gold-line"></span>
+          <span class="text-[9px] tracking-[0.4em] uppercase text-gold">Recursos</span>
+        </div>
+        <h2 class="font-serif text-4xl md:text-6xl">Conocimiento que<br/><em class="font-light text-white/50">trabaja por vos.</em></h2>
+      </div>
+      <p class="text-xs text-muted mt-4 md:mt-0 max-w-xs leading-relaxed">
+        Guías prácticas creadas desde la experiencia real en marketing y fotografía para emprendedores.
+      </p>
+    </div>
+
+    <!-- E-book: cover + card -->
+    <div class="reveal flex flex-col md:flex-row items-center md:items-stretch gap-10 md:gap-12">
+
+      <!-- ── E-cover 3D — 35% ── -->
+      <div class="w-full md:w-[35%] flex items-center justify-center shrink-0">
+        <div style="
+          perspective: 800px;
+          perspective-origin: 50% 50%;
+        ">
+          <div style="
+            width: 200px;
+            height: 280px;
+            position: relative;
+            transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+            transform-style: preserve-3d;
+            animation: ebook-float 6s ease-in-out infinite;
+            filter: drop-shadow(0 40px 50px rgba(0,0,0,0.8)) drop-shadow(0 8px 24px rgba(201,168,76,0.15));
+          ">
+
+            <!-- Páginas (canto derecho) -->
+            <div style="
+              position: absolute;
+              top: 3px; right: -10px; bottom: 3px;
+              width: 10px;
+              background: linear-gradient(to right,
+                #e8d9b5 0%, #f0ebe0 30%, #d4c49a 60%, #c8b882 80%, #e0d0a8 100%);
+              transform: rotateY(90deg);
+              transform-origin: left center;
+              border-radius: 0 1px 1px 0;
+            ">
+              <!-- Líneas de páginas -->
+              <div style="position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);"></div>
+            </div>
+
+            <!-- Lomo -->
+            <div style="
+              position: absolute;
+              top: 0; left: -18px; bottom: 0;
+              width: 18px;
+              background: linear-gradient(to right, #3a2508, #5a3e10 20%, #c9a84c 50%, #6b4a12 80%, #3a2508);
+              transform: rotateY(-90deg);
+              transform-origin: right center;
+              display: flex; align-items: center; justify-content: center;
+              border-radius: 1px 0 0 1px;
+            ">
+              <span style="
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                transform: rotate(180deg);
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 8px;
+                letter-spacing: 0.25em;
+                color: rgba(240,235,224,0.7);
+                text-transform: uppercase;
+                user-select: none;
+              ">EstelaVisual</span>
+            </div>
+
+            <!-- Tapa principal -->
+            <div style="
+              position: absolute; inset: 0;
+              background: #050505;
+              border: 1px solid rgba(201,168,76,0.25);
+              border-left: none;
+              display: flex; flex-direction: column;
+              align-items: center; justify-content: center;
+              padding: 20px 18px;
+              overflow: hidden;
+            ">
+              <!-- Esquinas ornamentales -->
+              <!-- sup izq -->
+              <svg style="position:absolute;top:10px;left:10px;width:18px;height:18px;opacity:.7" viewBox="0 0 18 18" fill="none">
+                <path d="M1 9V1h8" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
+                <circle cx="1" cy="1" r="1" fill="#c9a84c"/>
+              </svg>
+              <!-- sup der -->
+              <svg style="position:absolute;top:10px;right:10px;width:18px;height:18px;opacity:.7" viewBox="0 0 18 18" fill="none">
+                <path d="M17 9V1H9" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
+                <circle cx="17" cy="1" r="1" fill="#c9a84c"/>
+              </svg>
+              <!-- inf izq -->
+              <svg style="position:absolute;bottom:10px;left:10px;width:18px;height:18px;opacity:.7" viewBox="0 0 18 18" fill="none">
+                <path d="M1 9v8h8" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
+                <circle cx="1" cy="17" r="1" fill="#c9a84c"/>
+              </svg>
+              <!-- inf der -->
+              <svg style="position:absolute;bottom:10px;right:10px;width:18px;height:18px;opacity:.7" viewBox="0 0 18 18" fill="none">
+                <path d="M17 9v8H9" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
+                <circle cx="17" cy="17" r="1" fill="#c9a84c"/>
+              </svg>
+
+              <!-- Línea decorativa superior -->
+              <div style="position:absolute;top:34px;left:24px;right:24px;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent);"></div>
+
+              <!-- Contenido centrado -->
+              <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;">
+
+                <!-- Badge tipo -->
+                <p style="font-family:'Outfit',sans-serif;font-size:7px;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,168,76,0.5);margin:0;">E-Book</p>
+
+                <!-- Ícono cámara en círculo -->
+                <div style="
+                  width: 46px; height: 46px;
+                  border-radius: 50%;
+                  border: 1px solid rgba(201,168,76,0.3);
+                  display: flex; align-items: center; justify-content: center;
+                  background: rgba(201,168,76,0.05);
+                ">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </div>
+
+                <!-- Título -->
+                <div style="text-align:center;line-height:1.15;">
+                  <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#c9a84c;margin:0;font-weight:400;">Posteá</p>
+                  <p style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(240,235,224,0.5);margin:0;letter-spacing:.12em;font-weight:300;">y</p>
+                  <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#c9a84c;margin:0;font-weight:400;">Vendé</p>
+                </div>
+
+                <!-- Línea decorativa corta -->
+                <div style="width:32px;height:1px;background:rgba(201,168,76,0.35);"></div>
+
+              </div>
+
+              <!-- Línea decorativa inferior -->
+              <div style="position:absolute;bottom:34px;left:24px;right:24px;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent);"></div>
+
+              <!-- Marca inferior -->
+              <p style="position:absolute;bottom:16px;font-family:'Outfit',sans-serif;font-size:7px;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,168,76,0.4);margin:0;user-select:none;">EstelaVisual</p>
+
+            </div><!-- /tapa -->
+          </div><!-- /libro -->
+        </div>
+      </div>
+
+      <!-- ── Info + card — 65% ── -->
+      <div class="w-full md:w-[65%] flex items-stretch">
+        <div class="border border-white/[0.06] bg-dark3 p-10 md:p-12 hover:border-gold/20 transition-all duration-500 group w-full flex flex-col justify-between">
+
+          <div>
+            <!-- Badge -->
+            <div class="flex items-center gap-2.5 mb-7">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-60"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-gold"></span>
+              </span>
+              <span class="text-[9px] tracking-[0.35em] uppercase text-gold font-sans">Disponible ahora</span>
+            </div>
+
+            <!-- Tipo -->
+            <p class="text-[9px] tracking-[0.3em] uppercase text-white/25 font-sans mb-4">E-Book · PDF Digital</p>
+
+            <!-- Título -->
+            <h3 class="font-serif text-4xl md:text-5xl mb-5 group-hover:text-gold transition-colors duration-500">
+              Posteá y Vendé
+            </h3>
+
+            <!-- Descripción -->
+            <p class="text-sm text-cream/50 font-light leading-relaxed mb-8">
+              La guía práctica para emprendedores que quieren usar las redes sociales para vender, sin ser community managers.
+            </p>
+
+            <!-- Beneficios -->
+            <ul class="space-y-2.5 mb-10">
+              <li class="flex items-center gap-3 text-xs text-cream/55 font-light font-sans">
+                <span class="text-gold text-[10px]">✦</span> 6 capítulos prácticos con ejercicios aplicables desde el día uno
+              </li>
+              <li class="flex items-center gap-3 text-xs text-cream/55 font-light font-sans">
+                <span class="text-gold text-[10px]">✦</span> Plan de acción de 30 días semana a semana para arrancar ya
+              </li>
+              <li class="flex items-center gap-3 text-xs text-cream/55 font-light font-sans">
+                <span class="text-gold text-[10px]">✦</span> Garantía de devolución de 15 días — sin preguntas
+              </li>
+            </ul>
+          </div>
+
+          <!-- Separador -->
+          <div>
+            <div class="border-t border-white/[0.06] mb-8"></div>
+
+            <!-- Precio + botón -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+              <div class="shrink-0">
+                <div class="font-serif text-3xl text-gold leading-none mb-1">$9.99</div>
+                <p class="text-[9px] tracking-[0.2em] uppercase text-white/30 font-sans">USD · Pago único</p>
+              </div>
+              <a href="https://recursos.estelavisual.com.ar" target="_blank" rel="noopener"
+                 class="flex-1 text-center border border-gold/50 text-gold text-[9px] tracking-[0.3em] uppercase py-3.5 hover:bg-gold hover:text-dark transition-all duration-300">
+                Obtener E-Book →
+              </a>
+            </div>
+
+            <!-- Nota -->
+            <p class="text-[10px] tracking-[0.15em] uppercase text-white/20 font-sans mt-5">
+              Descarga inmediata · PDF · Sin suscripción
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /flex row -->
+  </div>
+</section>
+
 <!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
 <footer class="py-16 px-8 md:px-16 border-t border-white/[0.04] bg-dark">
   <div class="max-w-7xl mx-auto">
@@ -624,6 +1090,27 @@
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
 </a>
+
+<!-- ── Lightbox ── -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+  <img id="lightbox-img" src="" alt="" />
+  <button id="lightbox-close" aria-label="Cerrar">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </button>
+  <button class="lightbox-arrow" id="lightbox-prev" aria-label="Anterior">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="10 2 4 8 10 14"/>
+    </svg>
+  </button>
+  <button class="lightbox-arrow" id="lightbox-next" aria-label="Siguiente">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 2 12 8 6 14"/>
+    </svg>
+  </button>
+  <div id="lightbox-counter"></div>
+</div>
 
 <script>
   // ── Custom cursor ──
@@ -687,6 +1174,88 @@
       if (!isOpen) { answer.classList.add('open'); icon.classList.add('open'); }
     });
   });
+
+  // ── Lightbox ──
+  (function () {
+    const lb       = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lightbox-img');
+    const lbClose  = document.getElementById('lightbox-close');
+    const lbPrev   = document.getElementById('lightbox-prev');
+    const lbNext   = document.getElementById('lightbox-next');
+    const lbCount  = document.getElementById('lightbox-counter');
+
+    const items = Array.from(document.querySelectorAll('.gallery-item img'));
+    let current = 0;
+
+    function open(idx) {
+      current = idx;
+      lbImg.style.opacity = '0';
+      lbImg.src = items[current].src;
+      lbImg.alt = items[current].alt;
+      lbCount.textContent = (current + 1) + ' / ' + items.length;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbImg.onload = () => { lbImg.style.opacity = ''; };
+    }
+
+    function close() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { lbImg.src = ''; }, 350);
+    }
+
+    function navigate(dir) {
+      current = (current + dir + items.length) % items.length;
+      lbImg.style.opacity = '0';
+      setTimeout(() => {
+        lbImg.src = items[current].src;
+        lbImg.alt = items[current].alt;
+        lbCount.textContent = (current + 1) + ' / ' + items.length;
+        lbImg.onload = () => { lbImg.style.opacity = ''; };
+      }, 200);
+    }
+
+    // Abrir al hacer click en cada foto
+    items.forEach((img, i) => {
+      img.parentElement.addEventListener('click', () => open(i));
+    });
+
+    // Cerrar con X
+    lbClose.addEventListener('click', close);
+
+    // Cerrar al click fuera de la imagen
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+
+    // Flechas
+    lbPrev.addEventListener('click', e => { e.stopPropagation(); navigate(-1); });
+    lbNext.addEventListener('click', e => { e.stopPropagation(); navigate(1); });
+
+    // Teclado
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     close();
+      if (e.key === 'ArrowLeft')  navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    // Cursor en flechas y botón cerrar
+    [lbClose, lbPrev, lbNext].forEach(el => {
+      el.addEventListener('mouseenter', () => { if (ring) { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.opacity = '0.5'; } });
+      el.addEventListener('mouseleave', () => { if (ring) { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '1'; } });
+    });
+  })();
+
+  // ── Netlify form success ──
+  (function () {
+    if (new URLSearchParams(window.location.search).get('enviado') === 'true') {
+      const form    = document.getElementById('contact-form');
+      const success = document.getElementById('form-success');
+      if (form && success) {
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      }
+    }
+  })();
 </script>
   <script type="application/ld+json">
   {

@@ -1,0 +1,354 @@
+/* ============================================================
+   Reset & base
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --clr-bg:        #0d0b14;
+  --clr-surface:   #1a1728;
+  --clr-accent:    #c9a84c;
+  --clr-accent2:   #e8c97a;
+  --clr-text:      #f0ecff;
+  --clr-muted:     #a099c0;
+  --clr-page:      rgba(255,255,255,0.04);
+  --clr-page-line: rgba(201,168,76,0.12);
+  --radius:        14px;
+  --transition:    0.3s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Georgia', serif;
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ============================================================
+   Fondo animado — páginas de libro
+============================================================ */
+.book-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Cada página generada por JS */
+.page {
+  position: absolute;
+  width: clamp(60px, 8vw, 130px);
+  border-radius: 2px 6px 6px 2px;
+  background: var(--clr-page);
+  border-left: 2px solid var(--clr-page-line);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+  transform-origin: left center;
+  animation: pageTurn var(--dur, 6s) ease-in-out infinite var(--delay, 0s);
+  opacity: 0;
+}
+
+/* Líneas de texto simuladas dentro de cada página */
+.page::before,
+.page::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--clr-page-line);
+}
+.page::before { top: 22%; }
+.page::after  { top: 40%; box-shadow: 0 10px 0 var(--clr-page-line), 0 20px 0 var(--clr-page-line), 0 30px 0 var(--clr-page-line); }
+
+@keyframes pageTurn {
+  0%   { opacity: 0;    transform: rotateY(0deg)   translateX(-10px); }
+  10%  { opacity: 0.9; }
+  45%  { opacity: 0.7;  transform: rotateY(-30deg) translateX(4px); }
+  55%  { opacity: 0.7;  transform: rotateY(-30deg) translateX(4px); }
+  90%  { opacity: 0.9; }
+  100% { opacity: 0;    transform: rotateY(0deg)   translateX(-10px); }
+}
+
+/* ============================================================
+   Hero
+============================================================ */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px 80px;
+  gap: 20px;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%);
+}
+
+.hero__badge {
+  display: inline-block;
+  background: var(--clr-accent);
+  color: var(--clr-bg);
+  font-size: 0.75rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 100px;
+}
+
+.hero__title {
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.hero__title--accent {
+  color: var(--clr-accent);
+  display: inline-block;
+  position: relative;
+}
+
+.hero__title--accent::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--clr-accent), transparent);
+  border-radius: 2px;
+}
+
+.hero__subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: var(--clr-muted);
+  max-width: 560px;
+  line-height: 1.65;
+}
+
+.hero__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  max-width: 400px;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.95rem;
+}
+
+.hero__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--clr-text);
+}
+
+.hero__list li::before {
+  content: '✦';
+  color: var(--clr-accent);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.hero__price {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero__price--old {
+  font-size: 1.2rem;
+  color: var(--clr-muted);
+  text-decoration: line-through;
+  font-family: 'Arial', sans-serif;
+}
+
+.hero__price--now {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--clr-accent2);
+  font-family: 'Arial', sans-serif;
+}
+
+.hero__price--badge {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.35);
+  color: var(--clr-accent);
+  font-size: 0.8rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 100px;
+}
+
+.hero__guarantee {
+  font-size: 0.82rem;
+  font-family: 'Arial', sans-serif;
+  color: var(--clr-muted);
+}
+
+/* ============================================================
+   Botón
+============================================================ */
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 16px 40px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--clr-accent), #a8782a);
+  color: #0d0b14;
+  box-shadow: 0 4px 24px rgba(201,168,76,0.35);
+}
+
+.btn--primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(201,168,76,0.55);
+  background: linear-gradient(135deg, var(--clr-accent2), var(--clr-accent));
+}
+
+.btn--large {
+  font-size: 1.15rem;
+  padding: 20px 56px;
+}
+
+/* ============================================================
+   Benefits
+============================================================ */
+.benefits {
+  position: relative;
+  z-index: 1;
+  padding: 80px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, transparent, rgba(201,168,76,0.03) 50%, transparent);
+}
+
+.benefits__title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  margin-bottom: 48px;
+  color: var(--clr-text);
+}
+
+.benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.benefit-card {
+  background: var(--clr-surface);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.benefit-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201,168,76,0.4);
+}
+
+.benefit-card__icon {
+  font-size: 2.2rem;
+  margin-bottom: 16px;
+}
+
+.benefit-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: var(--clr-accent2);
+}
+
+.benefit-card p {
+  font-size: 0.9rem;
+  font-family: 'Arial', sans-serif;
+  color: var(--clr-muted);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Buy section
+============================================================ */
+.buy {
+  position: relative;
+  z-index: 1;
+  padding: 60px 24px 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.buy__box {
+  background: var(--clr-surface);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: var(--radius);
+  padding: 56px 40px;
+  text-align: center;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 0 60px rgba(201,168,76,0.07);
+}
+
+.buy__title {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  margin-bottom: 12px;
+}
+
+.buy__title strong { color: var(--clr-accent); }
+
+.buy__desc {
+  font-size: 0.88rem;
+  font-family: 'Arial', sans-serif;
+  color: var(--clr-muted);
+  margin-bottom: 32px;
+}
+
+.buy__secure {
+  font-size: 0.8rem;
+  font-family: 'Arial', sans-serif;
+  color: var(--clr-muted);
+  margin-top: 18px;
+}
+
+/* ============================================================
+   Footer
+============================================================ */
+.footer {
+  position: relative;
+  z-index: 1;
+  padding: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-family: 'Arial', sans-serif;
+  color: var(--clr-muted);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+@media (max-width: 480px) {
+  .btn--large { padding: 18px 36px; font-size: 1rem; }
+  .buy__box   { padding: 40px 24px; }
+}

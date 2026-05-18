@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Posteá y Vendé — E-Book de EstelaVisual</title>
+  <meta name="description" content="El e-book que te enseña a crear contenido en redes que convierte seguidores en clientes. Estrategia, textos y plantillas listas para usar. Solo $9.99 USD."/>
+  <meta property="og:title" content="Posteá y Vendé — E-Book de EstelaVisual"/>
+  <meta property="og:description" content="Aprendé a postear con intención y convertí tus redes en una máquina de ventas."/>
+  <meta property="og:type" content="website"/>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark:  '#050505',
+            dark2: '#0a0a0a',
+            dark3: '#111111',
+            gold:  '#c9a84c',
+            goldL: '#e8c97a',
+            cream: '#f0ebe0',
+            muted: '#888880',
+          },
+          fontFamily: {
+            sans:  ['Outfit', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ── Grain overlay ─────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025; pointer-events: none; z-index: 9999;
+    }
+
+    /* ── Custom cursor ─────────────────────────────────── */
+    @media (pointer: fine) {
+      * { cursor: none; }
+      #cursor      { position:fixed; width:8px; height:8px; background:#c9a84c; border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); mix-blend-mode:difference; }
+      #cursor-ring { position:fixed; width:36px; height:36px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:transform .25s ease,width .3s,height .3s,opacity .3s; }
+    }
+
+    /* ── Nav scroll ────────────────────────────────────── */
+    .nav-scrolled { background:rgba(5,5,5,0.97)!important; padding-top:.75rem!important; padding-bottom:.75rem!important; }
+
+    /* ── Gold line ─────────────────────────────────────── */
+    .gold-line { width:40px; height:1px; background:#c9a84c; display:inline-block; }
+
+    /* ── Reveal on scroll ──────────────────────────────── */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .9s ease,transform .9s ease; }
+    .reveal.active { opacity:1; transform:translateY(0); }
+
+    /* ── Benefit card ──────────────────────────────────── */
+    .benefit-card {
+      border: 1px solid rgba(201,168,76,0.10);
+      transition: border-color .4s ease, transform .4s ease, box-shadow .4s ease;
+    }
+    .benefit-card:hover {
+      border-color: rgba(201,168,76,0.45);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(201,168,76,0.07);
+    }
+
+    /* ── Chapter row ───────────────────────────────────── */
+    .chapter-row {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background .3s ease;
+    }
+    .chapter-row:hover { background: rgba(201,168,76,0.04); }
+
+    /* ── CTA pulse ─────────────────────────────────────── */
+    @keyframes pulse-gold {
+      0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
+      50%     { box-shadow: 0 0 0 16px rgba(201,168,76,0); }
+    }
+    .btn-pulse { animation: pulse-gold 2.4s ease-in-out infinite; }
+
+    /* ── Mobile menu ───────────────────────────────────── */
+    .mobile-menu { transform: translateY(-110%); transition: transform .4s ease; }
+    .mobile-menu.open { transform: translateY(0); }
+  </style>
+</head>
+<body class="bg-dark text-cream font-sans overflow-x-hidden selection:bg-gold selection:text-dark">
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ══════════════════════════════════════════════════════ NAV -->
+<nav id="navbar" class="fixed top-0 w-full z-[100] bg-dark/50 backdrop-blur-md border-b border-white/[0.04] py-5 px-6 md:px-14 flex justify-between items-center transition-all duration-500">
+
+  <a href="https://estelavisual.com.ar" class="flex items-center gap-3 select-none">
+    <span class="font-serif text-xl tracking-[0.1em] uppercase font-light">
+      Estela<span class="text-gold font-semibold">Visual</span>
+    </span>
+    <span class="font-sans text-[9px] tracking-[0.35em] uppercase text-white/25 font-extralight hidden sm:block">Estudio</span>
+  </a>
+
+  <div class="hidden md:flex items-center gap-8">
+    <a href="#beneficios" class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Qué incluye</a>
+    <a href="#capitulos"  class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Capítulos</a>
+    <a href="#precio"     class="text-[10px] tracking-[0.25em] uppercase text-white/50 hover:text-gold transition-colors">Precio</a>
+    <a href="https://pay.hotmart.com/S105871132H" target="_blank" rel="noopener"
+       class="border border-gold/50 text-gold text-[9px] tracking-[0.3em] uppercase px-6 py-2.5 hover:bg-gold hover:text-dark transition-all duration-300">
+      Comprar — $9.99
+    </a>
+  </div>
+
+  <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menú">
+    <span class="w-6 h-px bg-gold block" id="h1"></span>
+    <span class="w-4 h-px bg-gold block" id="h2"></span>
+    <span class="w-6 h-px bg-gold block" id="h3"></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" class="mobile-menu fixed top-0 left-0 right-0 z-[99] bg-dark/98 backdrop-blur-xl pt-24 pb-10 px-8 flex flex-col gap-6 border-b border-white/5">
+  <a href="#beneficios" class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">Qué incluye</a>
+  <a href="#capitulos"  class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">Capítulos</a>
+  <a href="#precio"     class="text-2xl font-serif text-cream/80 hover:text-gold transition-colors mobile-link">Precio</a>
+  <a href="https://pay.hotmart.com/S105871132H" target="_blank" rel="noopener"
+     class="mt-4 bg-gold text-dark text-sm tracking-[0.2em] uppercase py-4 text-center font-semibold mobile-link">
+    Comprar E-Book — $9.99 USD
+  </a>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ HERO -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+  <!-- Fondo negro con glow dorado radial -->
+  <div class="absolute inset-0 z-0 bg-dark">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse 70% 55% at 50% 45%, rgba(201,168,76,0.09) 0%, transparent 70%);"></div>
+  </div>
+
+  <!-- Left vertical label -->
+  <div class="absolute left-8 bottom-1/3 z-20 hidden lg:flex items-center gap-3 -rotate-90 origin-left">
+    <span class="gold-line opacity-50"></span>
+    <span class="text-[9px] tracking-[0.4em] uppercase text-white/30">E-Book · EstelaVisual</span>
+  </div>
+
+  <!-- Hero content -->
+  <div class="relative z-20 max-w-4xl px-6 md:px-14 text-center md:text-left">
+
+    <div class="mb-6">
+      <span class="inline-block text-gold tracking-[0.5em] uppercase text-[9px]">
+        E-Book · Marketing en Redes
+      </span>
+    </div>
+
+    <h1 class="font-serif text-5xl md:text-7xl lg:text-[86px] leading-[1.05] mb-6">
+      Posteá<br>
+      <span class="text-gold italic">y Vendé.</span>
+    </h1>
+
+    <p class="text-cream/60 text-sm md:text-base font-light max-w-lg mb-3 leading-relaxed mx-auto md:mx-0">
+      La guía definitiva para crear contenido en redes que no solo suma likes,
+      sino que convierte seguidores en clientes reales.
+    </p>
+    <p class="text-cream/40 text-xs tracking-[0.15em] uppercase mb-10 mx-auto md:mx-0">Por EstelaVisual — Estrategia · Textos · Plantillas</p>
+
+    <div class="flex flex-col sm:flex-row items-center md:items-start gap-4 justify-center md:justify-start">
+      <a href="https://pay.hotmart.com/S105871132H" target="_blank" rel="noopener"
+         class="btn-pulse bg-gold text-dark text-[10px] tracking-[0.25em] uppercase font-semibold py-4 px-10 hover:bg-goldL transition-all duration-300 inline-block">
+        Comprar Ahora — $9.99 USD
+      </a>
+      <a href="#beneficios"
+         class="border border-white/15 text-cream/60 text-[10px] tracking-[0.2em] uppercase py-4 px-8 hover:border-gold/40 hover:text-cream transition-all duration-300 inline-block">
+        Ver contenido ↓
+      </a>
+    </div>
+
+    <p class="text-white/30 text-[10px] tracking-[0.15em] uppercase mt-6 mx-auto md:mx-0">
+      Acceso inmediato · PDF descargable · Garantía 15 días
+    </p>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════ INTRO -->
+<section class="py-20 px-6 md:px-14 max-w-5xl mx-auto">
+  <div class="reveal text-center mb-16">
+    <span class="gold-line mb-6 block mx-auto opacity-50"></span>
+    <h2 class="font-serif text-3xl md:text-5xl mb-4">
+      ¿Por qué tu contenido no vende?
+    </h2>
+    <p class="text-cream/50 text-sm md:text-base font-light max-w-xl mx-auto leading-relaxed">
+      No es falta de seguidores. Es falta de estrategia. Este e-book te da el sistema completo para postear con intención y que cada publicación trabaje para vos.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ BENEFICIOS -->
+<section id="beneficios" class="py-4 pb-24 px-6 md:px-14 max-w-6xl mx-auto">
+
+  <div class="reveal text-center mb-14">
+    <span class="text-gold tracking-[0.4em] uppercase text-[9px]">Lo que vas a aprender</span>
+    <h2 class="font-serif text-3xl md:text-[46px] mt-3">Qué incluye el e-book</h2>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+    <div class="benefit-card reveal bg-dark3 p-8">
+      <div class="mb-5">
+        <!-- Chat / conversación -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h3 class="font-serif text-xl mb-3">Sin tecnicismos</h3>
+      <p class="text-cream/45 text-sm font-light leading-relaxed">
+        Como una charla de café. Sin KPIs, sin funnels, sin palabras raras que no te sirven.
+      </p>
+    </div>
+
+    <div class="benefit-card reveal bg-dark3 p-8" style="transition-delay:.08s">
+      <div class="mb-5">
+        <!-- Check circle -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <h3 class="font-serif text-xl mb-3">100% accionable</h3>
+      <p class="text-cream/45 text-sm font-light leading-relaxed">
+        Cada capítulo tiene pasos concretos y un ejercicio práctico. Leés y ya podés aplicar.
+      </p>
+    </div>
+
+    <div class="benefit-card reveal bg-dark3 p-8" style="transition-delay:.16s">
+      <div class="mb-5">
+        <!-- Usuario / persona -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h3 class="font-serif text-xl mb-3">Para emprendedores reales</h3>
+      <p class="text-cream/45 text-sm font-light leading-relaxed">
+        Para vos que manejás tu negocio solo y tenés poco tiempo.
+      </p>
+    </div>
+
+    <div class="benefit-card reveal bg-dark3 p-8" style="transition-delay:.24s">
+      <div class="mb-5">
+        <!-- Calendario -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <h3 class="font-serif text-xl mb-3">Plan de 30 días</h3>
+      <p class="text-cream/45 text-sm font-light leading-relaxed">
+        Al final tenés un plan de acción semana a semana para arrancar ya.
+      </p>
+    </div>
+
+    <div class="benefit-card reveal bg-dark3 p-8" style="transition-delay:.32s">
+      <div class="mb-5">
+        <!-- Cámara / apertura -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 1 0 4.93 19.07 10 10 0 0 0 19.07 4.93z"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      </div>
+      <h3 class="font-serif text-xl mb-3">Fotografía incluida</h3>
+      <p class="text-cream/45 text-sm font-light leading-relaxed">
+        Un capítulo entero para sacar fotos profesionales con tu celular. Sin cámara cara.
+      </p>
+    </div>
+
+    <div class="benefit-card reveal bg-dark3 p-8" style="transition-delay:.40s">
+      <div class="mb-5">
+        <!-- Descarga -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </div>
+      <h3 class="font-serif text-xl mb-3">Descarga inmediata</h3>
+      <p class="text-cream/45 text-sm font-light leading-relaxed">
+        Comprás y en segundos tenés el PDF listo en tu dispositivo. Sin esperas.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ CAPÍTULOS -->
+<section id="capitulos" class="py-20 px-6 md:px-14 border-t border-white/[0.05]">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="reveal text-center mb-14">
+      <span class="text-gold tracking-[0.4em] uppercase text-[9px]">Contenido completo</span>
+      <h2 class="font-serif text-3xl md:text-[46px] mt-3">Los capítulos</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="chapter-row flex items-start gap-5 py-5 px-3">
+        <span class="text-gold font-serif text-2xl leading-none mt-1 shrink-0">01</span>
+        <div>
+          <h4 class="font-serif text-lg mb-1">Conocé a tu cliente antes de postear nada</h4>
+          <p class="text-cream/40 text-xs font-light leading-relaxed">Entender a quién le estás hablando para dejar de postear para nadie.</p>
+        </div>
+      </div>
+      <div class="chapter-row flex items-start gap-5 py-5 px-3">
+        <span class="text-gold font-serif text-2xl leading-none mt-1 shrink-0">02</span>
+        <div>
+          <h4 class="font-serif text-lg mb-1">Qué publicar: los tipos de contenido que funcionan</h4>
+          <p class="text-cream/40 text-xs font-light leading-relaxed">Los 5 tipos de contenido que realmente venden y cómo usarlos estratégicamente.</p>
+        </div>
+      </div>
+      <div class="chapter-row flex items-start gap-5 py-5 px-3">
+        <span class="text-gold font-serif text-2xl leading-none mt-1 shrink-0">03</span>
+        <div>
+          <h4 class="font-serif text-lg mb-1">Cómo armar un calendario sin volverse loco</h4>
+          <p class="text-cream/40 text-xs font-light leading-relaxed">Un sistema simple para publicar de forma constante sin que te consuma la vida.</p>
+        </div>
+      </div>
+      <div class="chapter-row flex items-start gap-5 py-5 px-3">
+        <span class="text-gold font-serif text-2xl leading-none mt-1 shrink-0">04</span>
+        <div>
+          <h4 class="font-serif text-lg mb-1">Instagram para vender: trucos prácticos y reales</h4>
+          <p class="text-cream/40 text-xs font-light leading-relaxed">Las claves reales de Instagram para vender sin necesitar ser experto en algoritmos.</p>
+        </div>
+      </div>
+      <div class="chapter-row flex items-start gap-5 py-5 px-3">
+        <span class="text-gold font-serif text-2xl leading-none mt-1 shrink-0">05</span>
+        <div>
+          <h4 class="font-serif text-lg mb-1">Fotografía con el celular que no da vergüenza</h4>
+          <p class="text-cream/40 text-xs font-light leading-relaxed">Las reglas de oro para sacar fotos profesionales con tu celular. Sin cámara cara ni editor de diseño.</p>
+        </div>
+      </div>
+      <div class="chapter-row flex items-start gap-5 py-5 px-3 border-b-0">
+        <span class="text-gold font-serif text-2xl leading-none mt-1 shrink-0">06</span>
+        <div>
+          <h4 class="font-serif text-lg mb-1">De seguidor a cliente: cómo cerrar ventas desde las redes</h4>
+          <p class="text-cream/40 text-xs font-light leading-relaxed">Cómo convertir a la gente que te sigue en gente que te compra. El capítulo más importante.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ PRECIO -->
+<section id="precio" class="py-24 px-6 md:px-14 border-t border-white/[0.05]">
+  <div class="max-w-lg mx-auto text-center">
+
+    <div class="reveal">
+      <span class="text-gold tracking-[0.4em] uppercase text-[9px]">Oferta de lanzamiento</span>
+      <h2 class="font-serif text-3xl md:text-[46px] mt-3 mb-6">Tu inversión</h2>
+
+      <div class="bg-dark3 border border-gold/15 p-10 mb-8">
+        <div class="font-serif text-7xl text-gold leading-none mb-2">$9.99</div>
+        <p class="text-cream/40 text-xs tracking-[0.15em] uppercase">USD · Pago único · Sin suscripción</p>
+
+        <div class="border-t border-white/[0.06] my-8"></div>
+
+        <ul class="text-left space-y-3 mb-10">
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> E-book completo en PDF (23 páginas)
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> 6 capítulos con pasos concretos y ejercicios prácticos
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> Cómo definir tu cliente ideal
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> Los 5 tipos de contenido que más venden
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> Estrategia real de Instagram para vender
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> Fotografía profesional con tu celular
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> Plan de acción de 30 días para arrancar ya
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> Descarga inmediata — compatible con cualquier dispositivo
+          </li>
+          <li class="flex items-center gap-3 text-sm text-cream/65 font-light">
+            <span class="text-gold text-xs">✦</span> Garantía de devolución de 15 días
+          </li>
+        </ul>
+
+        <a href="https://pay.hotmart.com/S105871132H" target="_blank" rel="noopener"
+           class="btn-pulse block w-full bg-gold text-dark text-[10px] tracking-[0.3em] uppercase font-semibold py-5 hover:bg-goldL transition-all duration-300">
+          Comprar Ahora — $9.99 USD
+        </a>
+
+        <p class="text-white/25 text-[10px] tracking-[0.12em] uppercase mt-5">
+          🔒 Pago seguro vía Hotmart · Acceso inmediato
+        </p>
+      </div>
+
+      <p class="text-cream/30 text-xs font-light leading-relaxed">
+        Si en 15 días sentís que el e-book no cumplió lo prometido,<br>te devolvemos el dinero. Sin preguntas.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ FOOTER -->
+<footer class="border-t border-white/[0.05] py-10 px-6 md:px-14">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <a href="https://estelavisual.com.ar" class="font-serif text-lg tracking-[0.1em] uppercase font-light hover:text-gold transition-colors">
+      Estela<span class="text-gold font-semibold">Visual</span>
+    </a>
+    <p class="text-cream/25 text-[10px] tracking-[0.15em] uppercase text-center">
+      © 2026 EstelaVisual · Todos los derechos reservados
+    </p>
+    <a href="https://estelavisual.com.ar" class="text-[10px] tracking-[0.2em] uppercase text-cream/35 hover:text-gold transition-colors">
+      estelavisual.com.ar ↗
+    </a>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════ JS -->
+<script>
+/* ── Custom cursor ────────────────────────────── */
+(function() {
+  const dot  = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+  let rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    dot.style.left  = e.clientX + 'px';
+    dot.style.top   = e.clientY + 'px';
+    rx += (e.clientX - rx) * 0.12;
+    ry += (e.clientY - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+  });
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '56px'; ring.style.height = '56px'; ring.style.opacity = '.6'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '1'; });
+  });
+})();
+
+/* ── Nav scroll ───────────────────────────────── */
+(function() {
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('nav-scrolled', window.scrollY > 60);
+  }, { passive: true });
+})();
+
+/* ── Mobile menu ──────────────────────────────── */
+(function() {
+  const btn   = document.getElementById('menu-btn');
+  const menu  = document.getElementById('mobile-menu');
+  const h1    = document.getElementById('h1');
+  const h2    = document.getElementById('h2');
+  const h3    = document.getElementById('h3');
+  let open = false;
+  btn.addEventListener('click', () => {
+    open = !open;
+    menu.classList.toggle('open', open);
+    h1.style.transform = open ? 'rotate(45deg) translate(4px,4px)' : '';
+    h2.style.opacity   = open ? '0' : '1';
+    h3.style.transform = open ? 'rotate(-45deg) translate(4px,-4px)' : '';
+  });
+  document.querySelectorAll('.mobile-link').forEach(l => {
+    l.addEventListener('click', () => {
+      open = false; menu.classList.remove('open');
+      h1.style.transform = h3.style.transform = ''; h2.style.opacity = '1';
+    });
+  });
+})();
+
+/* ── Reveal on scroll ─────────────────────────── */
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('active')); return; }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ── Smooth scroll ────────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
