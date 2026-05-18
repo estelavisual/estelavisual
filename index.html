@@ -728,7 +728,7 @@
       <!-- Columna derecha — formulario -->
       <div class="reveal">
 
-        <!-- Mensaje de éxito (visible solo cuando Netlify redirige con ?enviado=true) -->
+        <!-- Mensaje de éxito (visible tras envío exitoso vía fetch) -->
         <div id="form-success" class="hidden border border-gold/20 bg-dark3 p-10 text-center">
           <div class="gold-line mx-auto mb-6 opacity-50"></div>
           <p class="font-serif text-2xl text-gold mb-2">¡Gracias!</p>
@@ -739,7 +739,6 @@
         <form
           name="contacto"
           method="POST"
-          action="/?enviado=true#contacto"
           data-netlify="true"
           netlify-honeypot="bot-field"
           id="contact-form"
@@ -1245,16 +1244,28 @@
     });
   })();
 
-  // ── Netlify form success ──
+  // ── Netlify form — submit vía fetch, sin redirección ──
   (function () {
-    if (new URLSearchParams(window.location.search).get('enviado') === 'true') {
-      const form    = document.getElementById('contact-form');
-      const success = document.getElementById('form-success');
-      if (form && success) {
+    const form    = document.getElementById('contact-form');
+    const success = document.getElementById('form-success');
+    if (!form || !success) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      })
+      .then(function () {
         form.classList.add('hidden');
         success.classList.remove('hidden');
-      }
-    }
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      })
+      .catch(function () {
+        alert('Hubo un error al enviar. Por favor escribinos por WhatsApp.');
+      });
+    });
   })();
 </script>
   <script type="application/ld+json">
