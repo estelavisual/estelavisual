@@ -729,11 +729,11 @@
       <div class="reveal">
 
         <!-- Mensaje de éxito (visible tras envío exitoso vía fetch) -->
-        <div id="form-success" class="hidden border border-gold/20 bg-dark3 p-10 text-center">
-          <div class="gold-line mx-auto mb-6 opacity-50"></div>
-          <p class="font-serif text-2xl text-gold mb-2">¡Gracias!</p>
-          <p class="text-sm text-cream/50 font-light">Te contactamos en menos de 24 horas.</p>
-          <div class="gold-line mx-auto mt-6 opacity-50"></div>
+        <div id="form-success" class="hidden border border-gold/20 bg-dark3 p-12 text-center">
+          <p class="text-gold text-xl mb-6 opacity-60">✦</p>
+          <p class="font-serif text-3xl text-gold mb-3" id="success-title">¡Gracias!</p>
+          <p class="text-sm text-cream/50 font-light leading-relaxed">Te respondemos en menos de 24 horas.</p>
+          <div class="gold-line mx-auto mt-8 opacity-30"></div>
         </div>
 
         <form
@@ -1258,6 +1258,9 @@
         body: new URLSearchParams(new FormData(form)).toString()
       })
       .then(function () {
+        const nombre = (form.querySelector('[name="nombre"]').value || '').trim().split(' ')[0];
+        const title  = document.getElementById('success-title');
+        if (title && nombre) title.textContent = '¡Gracias, ' + nombre + '!';
         form.classList.add('hidden');
         success.classList.remove('hidden');
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });
