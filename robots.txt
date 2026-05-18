@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /recursos/pages/
+Disallow: /*.json$
+
+Sitemap: https://estelavisual.com.ar/sitemap.xml
